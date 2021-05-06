@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class DBUtil {
     protected static final String MYSQL_DB = "jdbc:mysql://localhost:3306/bd_test_java";
-    protected static final String MYSQL_USER = "leo";
-    protected static final String MYSQL_PASSWORD = "chester";
+    protected static final String MYSQL_USER = "root";
+    protected static final String MYSQL_PASSWORD = "123456";
 
     public static Connection GetConnection() throws SQLException {
         return DriverManager.getConnection(MYSQL_DB, MYSQL_USER, MYSQL_PASSWORD);
