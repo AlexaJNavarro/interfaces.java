@@ -1,8 +1,9 @@
-package app.main;
+package app.views.main;
 
-import app.entity.Product;
+import app.entity.product.entity.Product;
 import app.model.DBUtil;
-import app.model.ProductModel;
+import app.model.product.model.ProductModel;
+import app.views.category.Category;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -35,6 +36,10 @@ public class Main {
     private JList list_quantity;
     private JList list_price;
     private JList list_cod;
+    private JComboBox cbx_category;
+    private JList list_category_name;
+    private JRadioButton rbt_status;
+    private JButton btn_openCategory;
 
     public void Reload() {
         try {
@@ -45,16 +50,21 @@ public class Main {
             Vector<String> Name = new Vector<>();
             Vector<Integer> Quantity = new Vector<>();
             Vector<Float> Price = new Vector<>();
+            Vector<String> Category = new Vector<>();
 
             products.forEach(product -> Cod.add(product.Cod));
             products.forEach(product -> Name.add(product.Name));
             products.forEach(product -> Quantity.add(product.Quantity));
             products.forEach(product -> Price.add(product.Price));
+            products.forEach(product -> Category.add(product.name_category));
+            products.forEach(product -> cbx_category.addItem(product.name_category));
 
             list_cod.setListData(Cod);
             list_name.setListData(Name);
             list_quantity.setListData(Quantity);
             list_price.setListData(Price);
+            list_category_name.setListData(Category);
+
         } catch (SQLException sqlException) {
             DBUtil.ProcessException(sqlException);
         }
@@ -65,11 +75,14 @@ public class Main {
         btn_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 Product product = new Product();
                 product.Cod = txt_cod.getText();
                 product.Name = txt_name.getText();
                 product.Quantity = Integer.parseInt(txt_quantity.getText());
                 product.Price = Float.parseFloat(txt_price.getText());
+                product.Status= rbt_status.isSelected();
+                product.name_category=cbx_category.getSelectedItem().toString();
                 try {
                     ProductModel productModel = new ProductModel(DBUtil.GetConnection());
                     boolean response = productModel.Create(product);
@@ -82,6 +95,7 @@ public class Main {
                 } catch (SQLException sqlException) {
                     DBUtil.ProcessException(sqlException);
                 }
+                cbx_category.removeAllItems();
                 Reload();
             }
         });
@@ -92,6 +106,8 @@ public class Main {
                 txt_name.setText("");
                 txt_quantity.setText("");
                 txt_price.setText("");
+                rbt_status.setSelected(false);
+                cbx_category.removeAllItems();
                 Reload();
             }
         });
@@ -109,6 +125,7 @@ public class Main {
                 } catch (SQLException sqlException) {
                     DBUtil.ProcessException(sqlException);
                 }
+                cbx_category.removeAllItems();
                 Reload();
             }
         });
@@ -121,6 +138,8 @@ public class Main {
                     product.Name = txt_name.getText();
                     product.Quantity = Integer.parseInt(txt_quantity.getText());
                     product.Price = Float.parseFloat(txt_price.getText());
+                    product.Status= rbt_status.isSelected();
+                    product.name_category=cbx_category.getSelectedItem().toString();
 
                     ProductModel productModel = new ProductModel(DBUtil.GetConnection());
                     boolean response = productModel.Update(product);
@@ -133,7 +152,14 @@ public class Main {
                 } catch (SQLException sqlException) {
                     DBUtil.ProcessException(sqlException);
                 }
+                cbx_category.removeAllItems();
                 Reload();
+            }
+        });
+        btn_openCategory.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
