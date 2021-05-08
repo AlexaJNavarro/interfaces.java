@@ -3,7 +3,6 @@ package app.views.main;
 import app.entity.product.entity.Product;
 import app.model.DBUtil;
 import app.model.product.model.ProductModel;
-import app.views.category.Category;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
