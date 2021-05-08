@@ -1,5 +1,6 @@
 package app.views.category;
 
+import app.controller.CategoryController;
 import app.entity.category.entity.CategoryEntity;
 import app.model.DBUtil;
 import app.model.category.model.CategoryModel;
@@ -29,26 +30,19 @@ public class CategoryView {
         frame.setVisible(true);
     }
     public void Reload(){
-        try{
-            CategoryModel categoryModel = new CategoryModel(DBUtil.GetConnection());
-            Vector<CategoryEntity> categories = categoryModel.GetAll();
+        CategoryController categoryController = new CategoryController();
+        Vector<CategoryEntity> categories = categoryController.GetAll();
 
-            Vector<String> Cod = new Vector<>();
-            Vector<String> Name = new Vector<>();
-            Vector<Boolean> Statu = new Vector<>();
+        Vector<String> Cod = new Vector<>();
+        Vector<String> Name = new Vector<>();
+        Vector<Boolean> Statu = new Vector<>();
 
-            categories.forEach(cat -> Cod.add(cat.code_cat));
-            categories.forEach(cat -> Name.add(cat.name_cat));
-            categories.forEach(cat -> Statu.add(cat.status_cat));
+        categories.forEach(cat -> Cod.add(cat.code_cat));
+        categories.forEach(cat -> Name.add(cat.name_cat));
+        categories.forEach(cat -> Statu.add(cat.status_cat));
 
-            list_code.setListData(Cod);
-            list_name.setListData(Name);
-
-
-        }catch(SQLException sqlException){
-            DBUtil.ProcessException(sqlException);
-        }
-
+        list_code.setListData(Cod);
+        list_name.setListData(Name);
     }
 
     public CategoryView() {
@@ -59,16 +53,11 @@ public class CategoryView {
                 cat.code_cat = txt_code.getText();
                 cat.name_cat = txt_name.getText();
                 cat.status_cat = rbx_status.isSelected();
-                try{
-                    CategoryModel catModel = new CategoryModel(DBUtil.GetConnection());
-                    boolean response = catModel.Create(cat);
-                    if(!response){
-                        JOptionPane.showMessageDialog(container, "Not category created", "Error",JOptionPane.ERROR_MESSAGE);
-                    }else{
-                        JOptionPane.showMessageDialog(container,"Created","OK",JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }catch(SQLException sqlException){
-                    DBUtil.ProcessException(sqlException);
+                CategoryController categoryController = new CategoryController();
+                if (!categoryController.Create(cat)) {
+                    JOptionPane.showMessageDialog(container, "Not category Deleted", "Error",JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(container,"Created","OK",JOptionPane.INFORMATION_MESSAGE);
                 }
                 Reload();
             }
@@ -85,20 +74,15 @@ public class CategoryView {
         btn_update.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CategoryEntity cat = new CategoryEntity();
-                cat.code_cat = txt_code.getText();
-                cat.name_cat = txt_name.getText();
-                cat.status_cat = rbx_status.isSelected();
-                try{
-                    CategoryModel catModel = new CategoryModel(DBUtil.GetConnection());
-                    boolean response = catModel.Update(cat);
-                    if(!response){
-                        JOptionPane.showMessageDialog(container, "Not category Updated", "Error",JOptionPane.ERROR_MESSAGE);
-                    }else{
-                        JOptionPane.showMessageDialog(container,"Updated","OK",JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }catch(SQLException sqlException){
-                    DBUtil.ProcessException(sqlException);
+                CategoryEntity categoryEntity = new CategoryEntity();
+                categoryEntity.code_cat = txt_code.getText();
+                categoryEntity.name_cat = txt_name.getText();
+                categoryEntity.status_cat = rbx_status.isSelected();
+                CategoryController categoryController = new CategoryController();
+                if (!categoryController.Update(categoryEntity)) {
+                    JOptionPane.showMessageDialog(container, "Not category Deleted", "Error",JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(container,"Update","OK",JOptionPane.INFORMATION_MESSAGE);
                 }
                 Reload();
             }
@@ -124,7 +108,7 @@ public class CategoryView {
         });
     }
 
-    public static void main(String[] args) {
+    public void main() {
         JFrame frame = new JFrame("CategoryView");
         frame.setContentPane(new CategoryView().container);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

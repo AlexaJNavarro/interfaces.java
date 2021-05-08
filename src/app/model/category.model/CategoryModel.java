@@ -10,7 +10,7 @@ import java.util.Vector;
 
 public class CategoryModel {
     protected Connection db;
-    private String sqlCategory = "SELECT name_category FROM category WHERE status_category=true";
+    private String sqlCategory = "SELECT name_category FROM category WHERE status_category = true";
     private String sqlGetAll = "SELECT cod_category, name_category FROM  category WHERE status_category=true;";
     private String sqlCreate = "INSERT INTO category VALUES (?, ?, ?) ";
     private String sqlUpdate = "UPDATE category SET name_category = ?, status_category = ? WHERE cod_category = ?";
