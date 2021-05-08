@@ -25,7 +25,6 @@ public class CategoryView {
     public void Call(){
         JFrame frame = new JFrame("CategoryView");
         frame.setContentPane(new CategoryView().container);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
@@ -106,13 +105,5 @@ public class CategoryView {
                 Reload();
             }
         });
-    }
-
-    public void main() {
-        JFrame frame = new JFrame("CategoryView");
-        frame.setContentPane(new CategoryView().container);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 }
