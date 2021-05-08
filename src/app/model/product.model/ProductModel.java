@@ -82,9 +82,9 @@ public class ProductModel {
             pstm.setString(1, product.Name);
             pstm.setInt(2, product.Quantity);
             pstm.setFloat(3, product.Price);
-            pstm.setString(4, product.Cod);
-            pstm.setBoolean(5,product.Status);
-            pstm.setString(6,product.name_category);
+            pstm.setBoolean(4,product.Status);
+            pstm.setString(5,product.name_category);
+            pstm.setString(6, product.Cod);
             int rowsAffected = pstm.executeUpdate();
             if (rowsAffected != 1) {
                 return false;

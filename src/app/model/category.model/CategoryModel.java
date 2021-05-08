@@ -37,6 +37,38 @@ public class CategoryModel {
         return true;
     }
 
+    public Boolean Update(CategoryEntity category){
+        try{
+            PreparedStatement pstm = this.db.prepareStatement(this.sqlUpdate);
+            pstm.setString(1, category.name_cat);
+            pstm.setBoolean(2, category.status_cat);
+            pstm.setString(3, category.code_cat);
+            int rowsAffected = pstm.executeUpdate();
+            if(rowsAffected != 1){
+                return  false;
+            }
+        }catch(SQLException sqlException){
+            DBUtil.ProcessException(sqlException);
+
+        }
+        return true;
+    }
+
+    public Boolean Delete(CategoryEntity category){
+        try{
+            PreparedStatement pstm = this.db.prepareStatement(this.sqlDelete);
+            pstm.setString(1, category.code_cat);
+            int rowsAffected = pstm.executeUpdate();
+            if(rowsAffected != 1){
+                return  false;
+            }
+        }catch(SQLException sqlException){
+            DBUtil.ProcessException(sqlException);
+
+        }
+        return true;
+    }
+
     public Vector<CategoryEntity> GetAll(){
         Vector<CategoryEntity> categories = new Vector<>();
         Statement stmt = null;
@@ -49,7 +81,6 @@ public class CategoryModel {
                 CategoryEntity cat = new CategoryEntity();
                 cat.code_cat = rs.getString("cod_category");
                 cat.name_cat = rs.getString("name_category");
-                cat.status_cat = rs.getBoolean("status_category");
                 categories.add(cat);
             }
         }catch (SQLException sqlException){

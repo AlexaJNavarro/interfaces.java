@@ -1,8 +1,11 @@
 package app.views.main;
 
+import app.entity.category.entity.CategoryEntity;
 import app.entity.product.entity.Product;
 import app.model.DBUtil;
 import app.model.product.model.ProductModel;
+import app.model.category.model.CategoryModel;
+import app.views.category.CategoryView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -44,6 +47,8 @@ public class Main {
         try {
             ProductModel productModel = new ProductModel(DBUtil.GetConnection());
             Vector<Product> products = productModel.GetAll();
+            CategoryModel catModel = new CategoryModel(DBUtil.GetConnection());
+            Vector<CategoryEntity> categories = catModel.GetAll();
 
             Vector<String> Cod = new Vector<>();
             Vector<String> Name = new Vector<>();
@@ -56,7 +61,7 @@ public class Main {
             products.forEach(product -> Quantity.add(product.Quantity));
             products.forEach(product -> Price.add(product.Price));
             products.forEach(product -> Category.add(product.name_category));
-            products.forEach(product -> cbx_category.addItem(product.name_category));
+            categories.forEach(category -> cbx_category.addItem(category.name_cat));
 
             list_cod.setListData(Cod);
             list_name.setListData(Name);
@@ -158,7 +163,8 @@ public class Main {
         btn_openCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                CategoryView cv = new CategoryView();
+                cv.Call();
             }
         });
     }
